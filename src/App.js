@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Layout from './components/Layout'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Dashboard from './pages/Dashboard'
+import UserProfile from './pages/UserProfile'
+import Cubicles from './pages/Cubicles'
+import Home from './pages/Home'
+import Error from './pages/404'
+import { AuthContextProvider } from './context/AuthContext'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const theme = createTheme({
+	palette: {
+		primary: {
+			main: '#00674A',
+			contrastText: '#fff',
+		},
+		secondary: {
+			main: '#007AA3',
+			contrastText: '#fff',
+		},
+	},
+})
+
+const App = () => {
+	return (
+		<ThemeProvider theme={theme}>
+			<AuthContextProvider>
+				<Router>
+					<Switch>
+						<Route exact path='/' component={Home} />
+						<Layout>
+							<Switch>
+								<Route exact path='/dashboard' component={Dashboard} />
+								<Route exact path='/user' component={UserProfile} />
+								<Route exact path='/cubicles' component={Cubicles} />
+								<Route component={Error} />
+							</Switch>
+						</Layout>
+					</Switch>
+				</Router>
+			</AuthContextProvider>
+		</ThemeProvider>
+	)
 }
 
-export default App;
+export default App
