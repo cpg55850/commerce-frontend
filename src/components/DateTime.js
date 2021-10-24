@@ -11,7 +11,7 @@ const DateTime = ({ value, setValue }) => {
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Stack spacing={3}>
 				<DesktopDateRangePicker
-					startText='Desktop start'
+					startText='Start Date'
 					value={value}
 					onChange={(newValue) => {
 						setValue(newValue)

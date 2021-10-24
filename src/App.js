@@ -8,6 +8,8 @@ import Cubicles from './pages/Cubicles'
 import Home from './pages/Home'
 import Error from './pages/404'
 import { AuthContextProvider } from './context/AuthContext'
+import { AlertContextProvider } from './context/AlertContext'
+import { ReservationContextProvider } from './context/ReservationContext'
 
 const theme = createTheme({
 	palette: {
@@ -26,19 +28,23 @@ const App = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<AuthContextProvider>
-				<Router>
-					<Switch>
-						<Route exact path='/' component={Home} />
-						<Layout>
+				<AlertContextProvider>
+					<ReservationContextProvider>
+						<Router>
 							<Switch>
-								<Route exact path='/dashboard' component={Dashboard} />
-								<Route exact path='/user' component={UserProfile} />
-								<Route exact path='/cubicles' component={Cubicles} />
-								<Route component={Error} />
+								<Route exact path='/' component={Home} />
+								<Layout>
+									<Switch>
+										<Route exact path='/dashboard' component={Dashboard} />
+										<Route exact path='/user' component={UserProfile} />
+										<Route exact path='/cubicles' component={Cubicles} />
+										<Route component={Error} />
+									</Switch>
+								</Layout>
 							</Switch>
-						</Layout>
-					</Switch>
-				</Router>
+						</Router>
+					</ReservationContextProvider>
+				</AlertContextProvider>
 			</AuthContextProvider>
 		</ThemeProvider>
 	)

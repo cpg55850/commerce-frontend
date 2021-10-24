@@ -2,6 +2,8 @@ import { Typography } from '@mui/material'
 import React from 'react'
 import Paper from '@mui/material/Paper'
 import { useAuth } from '../context/AuthContext'
+import Alert from '@mui/material/Alert'
+import Stack from '@mui/material/Stack'
 
 const Dashboard = () => {
 	const { user } = useAuth()

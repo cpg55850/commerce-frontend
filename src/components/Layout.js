@@ -12,8 +12,9 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { Link } from 'react-router-dom'
 import DrawerLinks from '../constants/links'
-import { Avatar, Container } from '@mui/material'
+import { Alert, Avatar, Container, Snackbar, Stack } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
+import { useAlert } from '../context/AlertContext'
 
 const drawerWidth = 240
 
@@ -25,6 +26,7 @@ const drawerWidth = 240
 // | - Box (Content)
 const Layout = ({ children }) => {
 	const { user } = useAuth()
+	const { open, handleClose, alertMsg, alertType } = useAlert()
 
 	return (
 		<Box sx={{ display: 'flex' }}>
@@ -88,25 +90,14 @@ const Layout = ({ children }) => {
 				sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
 			>
 				<Toolbar />
-				{/* <Typography paragraph>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-					dolor purus non enim praesent elementum facilisis leo vel. Risus at
-					ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-					quisque non tellus. Convallis convallis tellus id interdum velit
-					laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-					adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-					integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-					eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-					quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-					vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-					lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-					faucibus et molestie ac.
-				</Typography> */}
-				<Container maxWidth='md'>{children}</Container>
-				{/* <Buttons />
-				<FAB />
-				<DateTime /> */}
+
+				<Container maxWidth='md'>
+					<Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+						<Alert severity={alertType}>{alertMsg}</Alert>
+					</Snackbar>
+
+					{children}
+				</Container>
 			</Box>
 		</Box>
 	)

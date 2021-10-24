@@ -5,6 +5,7 @@ import { Button, TextField, Box } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { useHistory } from 'react-router'
 import { useAuth } from '../context/AuthContext'
+import { useAlert } from '../context/AlertContext'
 
 const initialValues = { email: '', password: '' }
 
@@ -22,9 +23,11 @@ const validationSchema = yup.object({
 const Login = () => {
 	const history = useHistory()
 	const { login } = useAuth()
+	const { showAlert } = useAlert()
 
 	const onSubmit = (values) => {
 		login(values.email, values.password)
+		showAlert('You logged in successfully!')
 		history.push('/dashboard')
 	}
 
@@ -77,11 +80,6 @@ const Login = () => {
 									Login
 								</Button>
 							</Grid>
-							{/* <Grid item>
-								<Typography variant='subtitle' sx={{ textAlign: 'right' }}>
-									Need an account?
-								</Typography>
-							</Grid> */}
 						</Grid>
 					</form>
 				)}

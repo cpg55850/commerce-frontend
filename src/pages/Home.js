@@ -8,8 +8,8 @@ import Grid from '@mui/material/Grid'
 const Home = () => {
 	return (
 		<Wrapper>
-			<PinkCircle />
-			<BlueCircle />
+			<GreenCircle />
+			<YellowCircle />
 
 			<Grid
 				container
@@ -59,9 +59,9 @@ const Wrapper = styled.div`
 	padding: 0;
 `
 
-const PinkCircle = styled.div`
+const GreenCircle = styled.div`
 	position: absolute;
-	top: 500px;
+	top: 65%;
 	left: -200px;
 	height: 500px;
 	width: 500px;
@@ -70,7 +70,7 @@ const PinkCircle = styled.div`
 	z-index: -1;
 `
 
-const BlueCircle = styled.div`
+const YellowCircle = styled.div`
 	position: absolute;
 	top: 0px;
 	left: 70%;
