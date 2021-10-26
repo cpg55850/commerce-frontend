@@ -7,6 +7,14 @@ import { useHistory } from 'react-router'
 import { useAuth } from '../context/AuthContext'
 import { useAlert } from '../context/AlertContext'
 
+const fakeUsers = [
+	{
+		id: 1,
+		email: 'charlie@gmail.com',
+		password: 'password',
+	},
+]
+
 const initialValues = { email: '', password: '' }
 
 const validationSchema = yup.object({
@@ -25,10 +33,28 @@ const Login = () => {
 	const { login } = useAuth()
 	const { showAlert } = useAlert()
 
+	const authenticate = (email, password) => {
+		const user = fakeUsers.find((o) => o.email === email)
+
+		if (!user) {
+			showAlert('No user found.', 'error')
+		}
+
+		if (user.password === password) {
+			return user
+		} else {
+			showAlert('Please type the correct password.', 'error')
+		}
+	}
+
 	const onSubmit = (values) => {
-		login(values.email, values.password)
-		showAlert('You logged in successfully!')
-		history.push('/dashboard')
+		const user = authenticate(values.email, values.password)
+
+		if (user) {
+			login(user.email, user.password)
+			showAlert('You logged in successfully!')
+			history.push('/dashboard')
+		}
 	}
 
 	return (

@@ -10,6 +10,7 @@ import Error from './pages/404'
 import { AuthContextProvider } from './context/AuthContext'
 import { AlertContextProvider } from './context/AlertContext'
 import { ReservationContextProvider } from './context/ReservationContext'
+import Alert from './components/Alert'
 
 const theme = createTheme({
 	palette: {
@@ -31,6 +32,7 @@ const App = () => {
 				<AlertContextProvider>
 					<ReservationContextProvider>
 						<Router>
+							<Alert />
 							<Switch>
 								<Route exact path='/' component={Home} />
 								<Layout>

@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom'
 import DrawerLinks from '../constants/links'
 import { Alert, Avatar, Container, Snackbar, Stack } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
-import { useAlert } from '../context/AlertContext'
 
 const drawerWidth = 240
 
@@ -26,7 +25,6 @@ const drawerWidth = 240
 // | - Box (Content)
 const Layout = ({ children }) => {
 	const { user } = useAuth()
-	const { open, handleClose, alertMsg, alertType } = useAlert()
 
 	return (
 		<Box sx={{ display: 'flex' }}>
@@ -91,13 +89,7 @@ const Layout = ({ children }) => {
 			>
 				<Toolbar />
 
-				<Container maxWidth='md'>
-					<Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-						<Alert severity={alertType}>{alertMsg}</Alert>
-					</Snackbar>
-
-					{children}
-				</Container>
+				<Container maxWidth='md'>{children}</Container>
 			</Box>
 		</Box>
 	)
