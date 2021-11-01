@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid'
 import { useHistory } from 'react-router'
 import { useAuth } from '../context/AuthContext'
 import { useAlert } from '../context/AlertContext'
+import Link from '@mui/material/Link'
 
 const fakeUsers = [
 	{
@@ -28,7 +29,7 @@ const validationSchema = yup.object({
 		.required('Password is required'),
 })
 
-const Login = () => {
+const Login = ({ toggleAuthType }) => {
 	const history = useHistory()
 	const { login } = useAuth()
 	const { showAlert } = useAlert()
@@ -105,6 +106,11 @@ const Login = () => {
 								>
 									Login
 								</Button>
+							</Grid>
+							<Grid item>
+								<Link onClick={() => toggleAuthType()} href='#'>
+									Need to register?
+								</Link>
 							</Grid>
 						</Grid>
 					</form>

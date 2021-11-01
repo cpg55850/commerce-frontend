@@ -12,16 +12,13 @@ export const ReservationContextProvider = ({ children }) => {
 	const [reservation, setReservation] = useState([])
 
 	const addReservation = (cubicle) => {
-		if (reservation.find((o) => o.cubicleID === cubicle.cubicleID))
-			return 'Error'
+		if (reservation.find((o) => o.id === cubicle.id)) return 'Error'
 
 		setReservation([...reservation, { ...cubicle }])
 	}
 
 	const removeReservation = (cubicle) => {
-		const filtered = reservation.filter(
-			(current) => current.cubicleID !== cubicle.cubicleID
-		)
+		const filtered = reservation.filter((current) => current.id !== cubicle.id)
 
 		setReservation([...filtered])
 	}

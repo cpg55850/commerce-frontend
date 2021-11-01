@@ -4,8 +4,19 @@ import Login from '../components/Login'
 import styled from 'styled-components'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
+import Register from '../components/Register'
 
 const Home = () => {
+	const [authType, setAuthType] = useState('login')
+
+	const toggleAuthType = () => {
+		if (authType === 'login') {
+			setAuthType('register')
+		} else {
+			setAuthType('login')
+		}
+	}
+
 	return (
 		<Wrapper>
 			<GreenCircle />
@@ -36,11 +47,15 @@ const Home = () => {
 							justifyContent: 'center',
 							backgroundColor: 'white',
 							borderRadius: '50%',
-							height: '350px',
-							width: '350px',
+							height: '380px',
+							width: '380px',
 						}}
 					>
-						<Login />
+						{authType === 'login' ? (
+							<Login toggleAuthType={toggleAuthType} />
+						) : (
+							<Register toggleAuthType={toggleAuthType} />
+						)}
 					</Paper>
 				</Grid>
 			</Grid>

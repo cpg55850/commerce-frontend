@@ -5,8 +5,18 @@ import { Button, TextField, Box } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { useHistory } from 'react-router'
 import { useAuth } from '../context/AuthContext'
+import { useAlert } from '../context/AlertContext'
+import Link from '@mui/material/Link'
 
-const initialValues = { email: '', password: '' }
+const fakeUsers = [
+	{
+		id: 1,
+		email: 'charlie@gmail.com',
+		password: 'password',
+	},
+]
+
+const initialValues = { email: '', password: '', password2: '' }
 
 const validationSchema = yup.object({
 	email: yup
@@ -17,15 +27,25 @@ const validationSchema = yup.object({
 		.string('Enter your password')
 		.min(8, 'Password should be of minimum 8 characters length')
 		.required('Password is required'),
+	password2: yup
+		.string('Enter your password')
+		.min(8, 'Password should be of minimum 8 characters length')
+		.required('Password is required'),
 })
 
-const Register = () => {
+const Register = ({ toggleAuthType }) => {
 	const history = useHistory()
 	const { login } = useAuth()
+	const { showAlert } = useAlert()
 
 	const onSubmit = (values) => {
-		login(values.email, values.password)
-		history.push('/dashboard')
+		if (values.password !== values.password2) {
+			showAlert('The passwords must match.', 'error')
+		} else {
+			login(values.email, values.password)
+			showAlert('You logged in successfully!')
+			history.push('/dashboard')
+		}
 	}
 
 	return (
@@ -68,14 +88,32 @@ const Register = () => {
 								/>
 							</Grid>
 							<Grid item>
+								<TextField
+									fullWidth
+									id='password2'
+									name='password2'
+									label='Repeat Password'
+									type='password'
+									value={values.password2}
+									onChange={handleChange}
+									error={touched.password2 && Boolean(errors.password2)}
+									helperText={touched.password2 && errors.password2}
+								/>
+							</Grid>
+							<Grid item>
 								<Button
 									color='primary'
 									variant='contained'
 									fullWidth
 									type='submit'
 								>
-									Login
+									Register
 								</Button>
+							</Grid>
+							<Grid item>
+								<Link onClick={() => toggleAuthType()} href='#'>
+									Need to login?
+								</Link>
 							</Grid>
 							{/* <Grid item>
 								<Typography variant='subtitle' sx={{ textAlign: 'right' }}>
