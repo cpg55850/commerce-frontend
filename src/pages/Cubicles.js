@@ -11,40 +11,70 @@ const Cubicles = () => {
 	const [value, setValue] = useState([null, null])
 	const data = [
 		{
-			cubicleID: '1',
-			startTime: new Date(2021, 9, 27),
-			endTime: new Date(2021, 9, 28),
+			id: '1',
+			name: 'Cubicle A',
+			reservations: [
+				{
+					userId: '1',
+					startTime: '2021-10-01',
+					endTime: '2021-10-02',
+				},
+				{
+					userId: '2',
+					startTime: '2021-10-06',
+					endTime: '2021-10-08',
+				},
+			],
 		},
 		{
-			cubicleID: '2',
-			startTime: new Date(2021, 9, 28),
-			endTime: new Date(2021, 9, 29),
-		},
-		{
-			cubicleID: '3',
-			startTime: new Date(2021, 9, 29),
-			endTime: new Date(2021, 9, 29),
-		},
-		{
-			cubicleID: '4',
-			startTime: new Date(2021, 10, 1),
-			endTime: new Date(2021, 10, 4),
-		},
-		{
-			cubicleID: '5',
-			startTime: new Date(2021, 10, 4),
-			endTime: new Date(2021, 10, 6),
+			id: '2',
+			name: 'Cubicle B',
+			reservations: [
+				{
+					userId: '1',
+					startTime: '2021-10-05',
+					endTime: '2021-10-08',
+				},
+			],
 		},
 	]
 	const [filteredData, setFilteredData] = useState([])
 	const { reservation } = useReservation()
 
+	const availableCubicles = (cubicles, inputStartTime, inputEndTime) => {
+		const originalArray = cubicles.slice()
+		let result = []
+
+		originalArray.forEach((c) => {
+			let isConflict = false
+
+			c.reservations.forEach((r) => {
+				if (
+					!(
+						(moment(inputStartTime).isBefore(r.startTime) &&
+							moment(inputEndTime).isBefore(r.startTime)) ||
+						(moment(inputStartTime).isAfter(r.endTime) &&
+							moment(inputEndTime).isAfter(r.endTime))
+					)
+				) {
+					isConflict = true
+				}
+			})
+
+			console.log('iteration', c.name)
+			// isConflict?
+			if (!isConflict) {
+				result.push(c)
+				console.log('pushing now!')
+			}
+		})
+
+		console.log('result', result)
+		return result
+	}
+
 	useEffect(() => {
-		const filteredData = data.filter(
-			(current) =>
-				moment(current.startTime).isSameOrAfter(value[0]) &&
-				moment(current.endTime).isSameOrBefore(value[1])
-		)
+		const filteredData = availableCubicles(data, value[0], value[1])
 
 		setFilteredData(filteredData)
 	}, [value])

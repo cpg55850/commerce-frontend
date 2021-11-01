@@ -23,8 +23,7 @@ const CubicleTable = (props) => {
 				<TableHead>
 					<TableRow>
 						<TableCell>Cubicle ID</TableCell>
-						<TableCell align='right'>Start Time</TableCell>
-						<TableCell align='right'>End Time</TableCell>
+						<TableCell align='right'>Name</TableCell>
 						{showReserve && <TableCell align='right'></TableCell>}
 						{showDelete && <TableCell align='right'></TableCell>}
 					</TableRow>
@@ -32,18 +31,13 @@ const CubicleTable = (props) => {
 				<TableBody>
 					{cubicles.map((row) => (
 						<TableRow
-							key={row.cubicleID}
+							key={row.id}
 							sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 						>
 							<TableCell component='th' scope='row'>
-								{row.cubicleID}
+								{row.id}
 							</TableCell>
-							<TableCell align='right'>
-								{moment(row.startTime).format('MMMM Do, YYYY')}
-							</TableCell>
-							<TableCell align='right'>
-								{moment(row.endTime).format('MMMM Do, YYYY')}
-							</TableCell>
+							<TableCell align='right'>{row.name}</TableCell>
 							{showReserve && (
 								<TableCell align='right'>
 									<Button
@@ -51,7 +45,7 @@ const CubicleTable = (props) => {
 										variant='contained'
 										onClick={() => {
 											addReservation(row)
-											showAlert(`Reservation ${row.cubicleID} added!`)
+											showAlert(`Reservation ${row.id} added!`)
 										}}
 									>
 										Reserve Cubicle
@@ -66,7 +60,7 @@ const CubicleTable = (props) => {
 										variant='contained'
 										onClick={() => {
 											removeReservation(row)
-											showAlert(`Reservation ${row.cubicleID} deleted!`)
+											showAlert(`Reservation ${row.id} deleted!`)
 										}}
 									>
 										Delete
