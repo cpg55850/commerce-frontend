@@ -7,15 +7,11 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import { Link } from 'react-router-dom'
 import { useReservation } from '../context/ReservationContext'
-import { useAlert } from '../context/AlertContext'
-import moment from 'moment'
 
 const CubicleTable = (props) => {
-	const { cubicles, showReserve, showDelete } = props
+	const { cubicles, showReserve, showDelete, inputDate } = props
 	const { addReservation, removeReservation } = useReservation()
-	const { showAlert } = useAlert()
 
 	return (
 		<TableContainer component={Paper}>
@@ -44,8 +40,8 @@ const CubicleTable = (props) => {
 										type='submit'
 										variant='contained'
 										onClick={() => {
-											addReservation(row)
-											showAlert(`Reservation ${row.id} added!`)
+											addReservation(row, inputDate[0], inputDate[1])
+											// showAlert(`Reservation ${row.id} added!`)
 										}}
 									>
 										Reserve Cubicle
@@ -60,7 +56,7 @@ const CubicleTable = (props) => {
 										variant='contained'
 										onClick={() => {
 											removeReservation(row)
-											showAlert(`Reservation ${row.id} deleted!`)
+											// showAlert(`Reservation ${row.id} deleted!`)
 										}}
 									>
 										Delete

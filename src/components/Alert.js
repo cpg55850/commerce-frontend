@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-	Alert as AlertM,
-	Avatar,
-	Container,
-	Snackbar,
-	Stack,
-} from '@mui/material'
+import { Alert as AlertM, Snackbar } from '@mui/material'
 import { useAlert } from '../context/AlertContext'
 
 const Alert = () => {

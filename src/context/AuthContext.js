@@ -12,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
+		// If the username is stored in a session, set the user to the stored one immediately
 		if (sessionStorage.authenticatedUser) {
 			console.log('User found in sessionStorage, setting the user...')
 			setUser(sessionStorage.authenticatedUser)
@@ -20,6 +21,15 @@ export const AuthContextProvider = ({ children }) => {
 	}, [])
 
 	const login = (username, pwd) => {
+		// Need to check if user exists in backend
+
+		// BACKEND TODO
+		// HTTP /GET /users
+		// body: { username }
+
+		// if exists, login
+		// else show error
+
 		console.log('Logging in... ', username, pwd)
 		sessionStorage.setItem('authenticatedUser', username)
 		setUser(username)

@@ -12,7 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { Link } from 'react-router-dom'
 import DrawerLinks from '../constants/links'
-import { Alert, Avatar, Container, Snackbar, Stack } from '@mui/material'
+import { Avatar, Container } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
 
 const drawerWidth = 240

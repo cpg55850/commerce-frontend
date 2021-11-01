@@ -7,14 +7,7 @@ import { useHistory } from 'react-router'
 import { useAuth } from '../context/AuthContext'
 import { useAlert } from '../context/AlertContext'
 import Link from '@mui/material/Link'
-
-const fakeUsers = [
-	{
-		id: 1,
-		email: 'charlie@gmail.com',
-		password: 'password',
-	},
-]
+import { fakeUsers } from '../constants/TempDBData'
 
 const initialValues = { email: '', password: '' }
 

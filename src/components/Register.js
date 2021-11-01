@@ -8,14 +8,6 @@ import { useAuth } from '../context/AuthContext'
 import { useAlert } from '../context/AlertContext'
 import Link from '@mui/material/Link'
 
-const fakeUsers = [
-	{
-		id: 1,
-		email: 'charlie@gmail.com',
-		password: 'password',
-	},
-]
-
 const initialValues = { email: '', password: '', password2: '' }
 
 const validationSchema = yup.object({
