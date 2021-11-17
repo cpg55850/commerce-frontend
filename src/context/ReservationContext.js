@@ -1,100 +1,78 @@
-import React, { useState, useEffect } from 'react'
-import moment from 'moment'
-import { cubicleData } from '../constants/TempDBData'
+import axios from 'axios'
+import React, { useState } from 'react'
+
 import { useAlert } from './AlertContext'
-import { useAuth } from './AuthContext'
 
 const ReservationContext = React.createContext([
   {
     id: '',
     name: '',
-    reservations: [],
+    reservation: [],
   },
 ])
 
 export const ReservationContextProvider = ({ children }) => {
   const [reservation, setReservation] = useState([])
   const { showAlert } = useAlert()
-  const { user } = useAuth()
 
-  // Need to retrieve the currently logged in user's reservations from the backend.
-
-  // BACKEND TODO
-  // HTTP GET /users/:id/reservations
-  // Get a list of reservations by the logged in user
+  // HTTP GET /reservations/user/id
   // Set the reservations to returned reservations
-
-  // TEMP SOLUTION
-  useEffect(() => {
-    let myCubicles = []
-
-    cubicleData.forEach((c) => {
-      console.log('c', c)
-      let isMatch = false
-      c.reservations.forEach((r) => {
-        console.log('r', r)
-        console.log('r.userId', r.userId)
-        console.log('user', user)
-        if (r.userId === user) {
-          isMatch = true
-        }
-      })
-
-      if (isMatch) {
-        myCubicles.push(c)
-      }
+  const getReservations = async (userId) => {
+    const res = await axios.get(`reservations/user/${userId}`).catch((err) => {
+      console.log(err)
+      showAlert('Cannot find reservations', 'error')
     })
 
-    console.log('setting reservations', myCubicles)
-    setReservation(myCubicles)
-  }, [user])
-
-  const addReservation = (cubicle, startTime, endTime) => {
-    // BACKEND TODO
-    // HTTP POST /reservations
-    // request body: { userID, cubicleID, startDate, endDate }
-
-    // Check if cubicle is already reserved
-    if (reservation.find((o) => o.id === cubicle.id)) {
-      return showAlert(`Cubicle ${cubicle.id} already reserved.`, 'error')
+    if (res) {
+      console.log('res', res)
+      const { data } = res
+      setReservation(res.data)
+      console.log('data', data)
+      console.log('reservation', reservation)
     }
-
-    // TEMP - Edit the cubicle to include the new reservation
-    const newCubicle = {
-      ...cubicle,
-      reservations: [
-        ...cubicle.reservations,
-        {
-          userId: user,
-          startTime: moment(startTime).format('YYYY-MM-DD'),
-          endTime: moment(endTime).format('YYYY-MM-DD'),
-        },
-      ],
-    }
-
-    console.log(user)
-    console.log(cubicle)
-    console.log('new cubicle', newCubicle)
-
-    setReservation([...reservation, newCubicle])
-    showAlert(`Reservation ${cubicle.id} added!`)
   }
 
-  const removeReservation = (cubicle) => {
-    // BACKEND TODO
-    // HTTP DELETE /reservations/:id
+  const addReservation = async (cubicle_id, user_id, start_date, end_date) => {
+    const body = {
+      cubicle_id,
+      user_id,
+      start_date,
+      end_date,
+    }
+    const res = await axios
+      .post('reservations', body)
+      .catch((err) => console.log(err))
 
+    // Get the cubicle that the reservation was made for
+    console.log('cubicle_id', cubicle_id)
+    const cub = await axios
+      .get(`cubicles/${cubicle_id}`)
+      .catch((err) => console.log(err))
+
+    console.log(cub.data)
+
+    const finalResults = [...reservation, { ...res.data, cubicle: cub.data }]
+    setReservation(finalResults)
+  }
+
+  const removeReservation = async (id) => {
     // Create a new array of cubicles with the passed in cubicle removed
-    const filtered = reservation.filter((current) => current.id !== cubicle.id)
-
-    // Set the reservations to that new array and alert the user
-    showAlert(`Reservation ${cubicle.id} deleted!`)
+    // // Set the reservations to that new array and alert the user
+    const filtered = reservation.filter((current) => current.id !== id)
+    showAlert(`Reservation ${id} deleted!`)
     setReservation([...filtered])
+
+    await axios.delete(`reservations/${id}`).catch((err) => console.log(err))
   }
 
   return (
     <ReservationContext.Provider
-      value={{ reservation, addReservation, removeReservation }}
+      value={{
+        reservation,
+        addReservation,
+        removeReservation,
+        getReservations,
+      }}
     >
       {children}
     </ReservationContext.Provider>

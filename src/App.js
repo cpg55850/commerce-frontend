@@ -13,43 +13,43 @@ import { ReservationContextProvider } from './context/ReservationContext'
 import Alert from './components/Alert'
 
 const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#00674A',
-			contrastText: '#fff',
-		},
-		secondary: {
-			main: '#007AA3',
-			contrastText: '#fff',
-		},
-	},
+  palette: {
+    primary: {
+      main: '#00674A',
+      contrastText: '#fff',
+    },
+    secondary: {
+      main: '#007AA3',
+      contrastText: '#fff',
+    },
+  },
 })
 
 const App = () => {
-	return (
-		<ThemeProvider theme={theme}>
-			<AuthContextProvider>
-				<AlertContextProvider>
-					<ReservationContextProvider>
-						<Router>
-							<Alert />
-							<Switch>
-								<Route exact path='/' component={Home} />
-								<Layout>
-									<Switch>
-										<Route exact path='/dashboard' component={Dashboard} />
-										<Route exact path='/user' component={UserProfile} />
-										<Route exact path='/cubicles' component={Cubicles} />
-										<Route component={Error} />
-									</Switch>
-								</Layout>
-							</Switch>
-						</Router>
-					</ReservationContextProvider>
-				</AlertContextProvider>
-			</AuthContextProvider>
-		</ThemeProvider>
-	)
+  return (
+    <ThemeProvider theme={theme}>
+      <AlertContextProvider>
+        <AuthContextProvider>
+          <ReservationContextProvider>
+            <Router>
+              <Alert />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Layout>
+                  <Switch>
+                    <Route exact path="/dashboard" component={Dashboard} />
+                    <Route exact path="/user" component={UserProfile} />
+                    <Route exact path="/cubicles" component={Cubicles} />
+                    <Route component={Error} />
+                  </Switch>
+                </Layout>
+              </Switch>
+            </Router>
+          </ReservationContextProvider>
+        </AuthContextProvider>
+      </AlertContextProvider>
+    </ThemeProvider>
+  )
 }
 
 export default App

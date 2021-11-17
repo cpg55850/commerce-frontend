@@ -1,51 +1,50 @@
 import React, { useState, useEffect } from 'react'
+import { useAlert } from './AlertContext'
+import axios from 'axios'
 
 const AuthContext = React.createContext({
-  user: '',
+  user: {},
   login: () => {},
   logout: () => {},
-  loading: true,
 })
 
 export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
+  const { showAlert } = useAlert()
 
   useEffect(() => {
     // If the username is stored in a session, set the user to the stored one immediately
-    if (sessionStorage.authenticatedUser) {
+    if (sessionStorage.currentUser) {
       console.log('User found in sessionStorage, setting the user...')
-      setUser(sessionStorage.authenticatedUser)
+      setUser(JSON.parse(sessionStorage.currentUser))
     }
-    setLoading(false)
   }, [])
 
-  const login = (username, pwd) => {
-    // Need to check if user exists in backend
+  const login = async (email, password) => {
+    const res = await axios
+      .post('users/auth', { email, password })
+      .catch((err) => {
+        console.log(err)
+        showAlert('Incorrect email or password', 'error')
+      })
 
-    // BACKEND TODO
-    // HTTP /POST /users/auth
-    // body: { email, password }
+    if (res) {
+      const user = res.data
 
-    // if exists, login
-    // else show error
-
-    console.log('Logging in... ', username, pwd)
-    sessionStorage.setItem('authenticatedUser', username)
-    setUser(username)
-    setLoading(false)
+      sessionStorage.setItem('currentUser', JSON.stringify(user))
+      console.log('you just logged in, user is ', user)
+      setUser(user)
+      showAlert('Logged in successfully!')
+    }
   }
 
   const logout = () => {
-    sessionStorage.removeItem('authenticatedUser')
-    setUser('')
-    setLoading(false)
+    sessionStorage.removeItem('currentUser')
+    setUser(null)
   }
 
-  const isLoggedIn = user !== '' ? true : false
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, loading }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
