@@ -38,13 +38,26 @@ export const AuthContextProvider = ({ children }) => {
     }
   }
 
+  const register = async (email, name, password) => {
+    const res = await axios
+      .post('/users/', { email, name, password })
+      .catch((err) => {
+        console.log(err)
+        showAlert("Couldn't register the user", 'error')
+      })
+
+    if (!res) return
+
+    login(email, password)
+  }
+
   const logout = () => {
     sessionStorage.removeItem('currentUser')
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

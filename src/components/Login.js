@@ -21,13 +21,11 @@ const validationSchema = yup.object({
 })
 
 const Login = ({ toggleAuthType }) => {
-  const { login, user } = useAuth()
+  const { login } = useAuth()
 
   const onSubmit = (values) => {
     login(values.email, values.password)
   }
-
-  if (user) return <Redirect to="/dashboard" />
 
   return (
     <Box
