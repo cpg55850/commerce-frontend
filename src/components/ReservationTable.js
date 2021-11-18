@@ -11,10 +11,16 @@ import { useReservation } from '../context/ReservationContext'
 import { useAuth } from '../context/AuthContext'
 import { Typography } from '@mui/material'
 import moment from 'moment'
+import Loading from './Loading'
 
 const ReservationTable = (props) => {
-  const { addReservation, removeReservation, reservation, getReservations } =
-    useReservation()
+  const {
+    addReservation,
+    removeReservation,
+    reservation,
+    getReservations,
+    loading,
+  } = useReservation()
   const { user } = useAuth()
 
   useEffect(() => {
@@ -25,6 +31,10 @@ const ReservationTable = (props) => {
 
   if (reservation === 0) {
     return <></>
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (
@@ -56,10 +66,10 @@ const ReservationTable = (props) => {
                   <TableCell align="right">{row.cubicle.name}</TableCell>
 
                   <TableCell align="right">
-                    {moment(row.startDate).format('MMM Do')}
+                    {moment(row.start_date).format('MMM Do')}
                   </TableCell>
                   <TableCell align="right">
-                    {moment(row.endDate).format('MMM Do')}
+                    {moment(row.end_date).format('MMM Do')}
                   </TableCell>
                   <TableCell align="right">
                     <Button

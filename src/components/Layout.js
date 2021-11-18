@@ -15,6 +15,7 @@ import DrawerLinks from '../constants/links'
 import { Avatar, Container } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
 import { Logout } from '@mui/icons-material'
+import { useReservation } from '../context/ReservationContext'
 
 const drawerWidth = 240
 
@@ -26,6 +27,7 @@ const drawerWidth = 240
 // | - Box (Content)
 const Layout = ({ children }) => {
   const { user, logout } = useAuth()
+  const { removeAllReservations } = useReservation()
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -86,7 +88,10 @@ const Layout = ({ children }) => {
             to={'/'}
             button
             key={'logout'}
-            onClick={() => logout()}
+            onClick={() => {
+              removeAllReservations()
+              logout()
+            }}
           >
             <ListItemIcon sx={{ color: 'primary.contrastText' }}>
               <Logout />

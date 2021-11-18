@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAlert } from './AlertContext'
+import { useReservation } from './ReservationContext'
 import axios from 'axios'
 
 const AuthContext = React.createContext({
@@ -28,14 +29,14 @@ export const AuthContextProvider = ({ children }) => {
         showAlert('Incorrect email or password', 'error')
       })
 
-    if (res) {
-      const user = res.data
+    if (!res) return
 
-      sessionStorage.setItem('currentUser', JSON.stringify(user))
-      console.log('you just logged in, user is ', user)
-      setUser(user)
-      showAlert('Logged in successfully!')
-    }
+    const user = res.data
+
+    sessionStorage.setItem('currentUser', JSON.stringify(user))
+    console.log('you just logged in, user is ', user)
+    setUser(user)
+    showAlert('Logged in successfully!')
   }
 
   const register = async (email, name, password) => {

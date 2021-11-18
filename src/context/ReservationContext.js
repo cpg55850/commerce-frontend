@@ -8,54 +8,58 @@ const ReservationContext = React.createContext([
     id: '',
     name: '',
     reservation: [],
+    loading: true,
   },
 ])
 
 export const ReservationContextProvider = ({ children }) => {
   const [reservation, setReservation] = useState([])
+  const [loading, setLoading] = useState(true)
   const { showAlert } = useAlert()
 
   // HTTP GET /reservations/user/id
   // Set the reservations to returned reservations
   const getReservations = async (userId) => {
+    setLoading(true)
     const res = await axios.get(`reservations/user/${userId}`).catch((err) => {
       console.log(err)
       showAlert('Cannot find reservations', 'error')
     })
 
-    if (res) {
-      console.log('res', res)
-      const { data } = res
-      setReservation(res.data)
-      console.log('data', data)
-      console.log('reservation', reservation)
-    }
+    if (!res) return
+
+    console.log('res', res)
+    const { data } = res
+    setReservation(res.data)
+    console.log('data', data)
+    console.log('reservation', reservation)
+
+    setLoading(false)
   }
 
   const addReservation = async (cubicle_id, user_id, start_date, end_date) => {
+    setLoading(true)
     const body = {
       cubicle_id,
       user_id,
       start_date,
       end_date,
     }
-    const res = await axios
-      .post('reservations', body)
-      .catch((err) => console.log(err))
+    await axios.post('reservations/', body).catch((err) => console.log(err))
 
-    // Get the cubicle that the reservation was made for
-    console.log('cubicle_id', cubicle_id)
-    const cub = await axios
-      .get(`cubicles/${cubicle_id}`)
-      .catch((err) => console.log(err))
+    const res = await axios.get(`reservations/user/${user_id}`).catch((err) => {
+      console.log(err)
+      showAlert('Cannot find reservations', 'error')
+    })
 
-    console.log(cub.data)
+    if (!res) return
 
-    const finalResults = [...reservation, { ...res.data, cubicle: cub.data }]
-    setReservation(finalResults)
+    setReservation(res.data)
+    setLoading(false)
   }
 
   const removeReservation = async (id) => {
+    setLoading(true)
     // Create a new array of cubicles with the passed in cubicle removed
     // // Set the reservations to that new array and alert the user
     const filtered = reservation.filter((current) => current.id !== id)
@@ -63,6 +67,13 @@ export const ReservationContextProvider = ({ children }) => {
     setReservation([...filtered])
 
     await axios.delete(`reservations/${id}`).catch((err) => console.log(err))
+    setLoading(false)
+  }
+
+  const removeAllReservations = async () => {
+    setLoading(true)
+    setReservation([])
+    setLoading(false)
   }
 
   return (
@@ -72,6 +83,8 @@ export const ReservationContextProvider = ({ children }) => {
         addReservation,
         removeReservation,
         getReservations,
+        removeAllReservations,
+        loading,
       }}
     >
       {children}
