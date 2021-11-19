@@ -25,7 +25,10 @@ const Cubicles = () => {
       .get(`/cubicles/available/${body.startDate}/${body.endDate}`)
       .catch((err) => {
         console.log(err)
-        showAlert(`Invalid start and end dates`, 'error')
+        showAlert(
+          `Error: Start date cannot be further than 3 months in advance and end date cannot be further than 6 months in advance`,
+          'error'
+        )
       })
 
     if (!res) return
