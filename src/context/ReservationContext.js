@@ -45,7 +45,10 @@ export const ReservationContextProvider = ({ children }) => {
       start_date,
       end_date,
     }
-    await axios.post('reservations/', body).catch((err) => console.log(err))
+    await axios.post('reservations/', body).catch((err) => {
+      console.log(err.response)
+      showAlert(`${err.response.statusText}`, 'error')
+    })
 
     const res = await axios.get(`reservations/user/${user_id}`).catch((err) => {
       console.log(err)

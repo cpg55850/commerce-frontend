@@ -7,10 +7,12 @@ import moment from 'moment'
 import axios from 'axios'
 import { Box } from '@mui/system'
 import ReservationTable from '../components/ReservationTable'
+import { useAlert } from '../context/AlertContext'
 
 const Cubicles = () => {
   const [inputDate, setInputDate] = useState([null, null])
   const [cubicles, setCubicles] = useState([])
+  const { showAlert } = useAlert()
 
   const fetchCubicles = async () => {
     const body = {
@@ -19,9 +21,14 @@ const Cubicles = () => {
     }
 
     console.log(`/cubicles/available/${body.startDate}/${body.endDate}`)
-    const res = await axios.get(
-      `/cubicles/available/${body.startDate}/${body.endDate}`
-    )
+    const res = await axios
+      .get(`/cubicles/available/${body.startDate}/${body.endDate}`)
+      .catch((err) => {
+        console.log(err)
+        showAlert(`Invalid start and end dates`, 'error')
+      })
+
+    if (!res) return
     setCubicles(res.data)
   }
 
