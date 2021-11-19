@@ -21,8 +21,9 @@ const CubicleTable = (props) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Cubicle ID</TableCell>
-            <TableCell align="right">Name</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">Building</TableCell>
+            <TableCell align="right">Floor</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
@@ -34,9 +35,10 @@ const CubicleTable = (props) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {row.name}
                 </TableCell>
-                <TableCell align="right">{row.name}</TableCell>
+                <TableCell align="right">{row.building}</TableCell>
+                <TableCell align="right">{row.floor}</TableCell>
                 <TableCell align="right">
                   <Button
                     type="submit"

@@ -46,8 +46,9 @@ const ReservationTable = (props) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Cubicle ID</TableCell>
-              <TableCell align="right">Name</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Building</TableCell>
+              <TableCell align="right">Floor</TableCell>
               <TableCell align="right">Start Date</TableCell>
               <TableCell align="right">End Date</TableCell>
               <TableCell align="right"></TableCell>
@@ -61,10 +62,11 @@ const ReservationTable = (props) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.cubicle.id}
+                    {row.cubicle.name}
                   </TableCell>
-                  <TableCell align="right">{row.cubicle.name}</TableCell>
 
+                  <TableCell align="right">{row.cubicle.building}</TableCell>
+                  <TableCell align="right">{row.cubicle.floor}</TableCell>
                   <TableCell align="right">
                     {moment(row.start_date).format('MMM Do')}
                   </TableCell>
