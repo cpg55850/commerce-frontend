@@ -52,8 +52,8 @@ const Home = () => {
               justifyContent: 'center',
               backgroundColor: 'white',
               borderRadius: '50%',
-              height: '380px',
-              width: '380px',
+              height: '425px',
+              width: '425px',
             }}
           >
             {authType === 'login' ? (
